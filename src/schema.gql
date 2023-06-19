@@ -2,31 +2,44 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Profile {
+  id: String!
+  userName: String!
+  dob: String
+  bio: String
+  user: User
+  userId: String!
+}
+
 type User {
   id: String!
   email: String!
-  username: String!
-  DOB: DateTime!
-  bio: String!
+  profile: Profile
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Query {
+  getAllProfiles: [Profile!]!
   getUserByID(id: String!): User!
 }
 
 type Mutation {
+  createProfile(createProfile: CreateProfileInput!): Profile!
   signup(SignUp: SignupUserInput!): User!
+  login(Login: LoginUserInput!): User!
+}
+
+input CreateProfileInput {
+  userName: String
+  dob: String
+  bio: String
 }
 
 input SignupUserInput {
   email: String!
   password: String!
-  username: String
-  DOB: DateTime
-  bio: String
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }

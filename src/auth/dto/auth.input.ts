@@ -19,13 +19,4 @@ export class SignupUserInput {
   @Field()
   // @MinLength(6)
   password: string;
-
-  @Field({ nullable: true })
-  username: string;
-
-  @Field({ nullable: true })
-  DOB: Date;
-
-  @Field({ nullable: true })
-  bio: string;
 }

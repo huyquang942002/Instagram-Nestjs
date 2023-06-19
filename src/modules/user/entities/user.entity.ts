@@ -1,31 +1,35 @@
 import { Field, HideField, ObjectType } from '@nestjs/graphql';
-
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Profile } from 'src/modules/profiles/entities/profile.entity';
 
 @ObjectType()
 @Entity()
 export class User {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn('uuid')
+  id: string = uuidv4();
 
   @Field()
   @Column()
   email: string;
 
-  @Field()
-  @Column()
-  username: string;
-
   @HideField()
   @Column()
   password: string;
 
-  @Field()
-  @Column()
-  DOB: Date;
+  @HideField()
+  @Column({ nullable: true, default: null })
+  accessToken?: string;
 
-  @Field()
-  @Column()
-  bio: string;
+  // Profiles relationship: 1-1
+  @OneToOne(() => Profile, (profile) => profile.user)
+  @Field(() => Profile, { nullable: true })
+  profile: Profile;
 }

@@ -8,6 +8,8 @@ import { UserModule } from './modules/user/user.module';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Profile } from './modules/profiles/entities/profile.entity';
+import { ProfileModule } from './modules/profiles/profiles.module';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       username: 'root',
       password: '',
       database: 'instagram',
-      entities: [User],
+      entities: [User, Profile],
       synchronize: true,
     }),
 
@@ -30,12 +32,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
       installSubscriptionHandlers: true,
-      // cors: {
-      //   credentials: true,
-      //   origin: true,
-      // },
     }),
-
+    ProfileModule,
     UserModule,
   ],
   controllers: [AppController],

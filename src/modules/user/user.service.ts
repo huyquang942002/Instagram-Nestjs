@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SignupUserInput } from 'src/auth/dto/auth.input';
+import { LoginUserInput, SignupUserInput } from 'src/auth/dto/auth.input';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { MailService } from '../email/email.service';
+import * as bcrypt from 'bcrypt';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
@@ -11,9 +17,10 @@ export class UserService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private mailService: MailService,
+    private authService: AuthService,
   ) {}
 
-  async signup(signupUserInput: SignupUserInput) {
+  async signup(signupUserInput: SignupUserInput): Promise<User> {
     if (!signupUserInput.email || !signupUserInput.password) {
       throw new NotFoundException('Please provide a valid email or password!');
     }
@@ -28,6 +35,8 @@ export class UserService {
     // console.log(otp)
 
     const user = this.usersRepository.create(signupUserInput);
+
+    user.password = await bcrypt.hash(signupUserInput.password, 10);
 
     await this.usersRepository.save(user);
 
@@ -51,6 +60,31 @@ export class UserService {
     if (!user) {
       throw new Error('User not found.');
     }
+
+    return user;
+  }
+
+  async login(loginInput: LoginUserInput): Promise<User> {
+    if (!loginInput.email || !loginInput.password) {
+      throw new NotFoundException('Please input email or password');
+    }
+
+    const user = await this.findOneByEmail(loginInput.email);
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    const isValid = await bcrypt.compare(loginInput.password, user.password);
+    if (!isValid) {
+      throw new UnauthorizedException("You've entered an incorrect password!");
+    }
+
+    const accessToken = await this.authService.accessToken(user);
+
+    user.accessToken = accessToken;
+
+    await this.usersRepository.save(user);
 
     return user;
   }
