@@ -10,6 +10,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Profile } from './modules/profiles/entities/profile.entity';
 import { ProfileModule } from './modules/profiles/profiles.module';
+import { JwtStrategy } from './auth/strategies/jwt.stategies';
 
 @Module({
   imports: [
@@ -37,6 +38,6 @@ import { ProfileModule } from './modules/profiles/profiles.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}

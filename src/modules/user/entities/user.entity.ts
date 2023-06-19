@@ -25,7 +25,7 @@ export class User {
   password: string;
 
   @HideField()
-  @Column({ nullable: true, default: null })
+  @Column({ length: 500, nullable: true, default: null })
   accessToken?: string;
 
   // Profiles relationship: 1-1
