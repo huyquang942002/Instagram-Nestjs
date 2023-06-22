@@ -12,7 +12,7 @@ import { MailService } from './email.service';
         secure: false,
         auth: {
           user: 'huywocker92016@gmail.com',
-          pass: 'brqiuxgpkexsvurl',
+          pass: '',
         },
       },
     }),
