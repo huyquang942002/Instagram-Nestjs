@@ -3,11 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   Column,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Profile } from 'src/modules/profiles/entities/profile.entity';
+import { Follow } from 'src/modules/follows/entities/follow.entity';
 
 @ObjectType()
 @Entity()
@@ -36,4 +38,12 @@ export class User {
   @Field({ defaultValue: true })
   @Column({ default: true })
   isActive: boolean;
+
+  // Followers relationship: 1-n
+  @OneToMany(() => Follow, (follow) => follow.following_users)
+  followers: Follow[];
+
+  // Followings relationship: 1-n
+  @OneToMany(() => Follow, (follow) => follow.follower_users)
+  followings: Follow[];
 }

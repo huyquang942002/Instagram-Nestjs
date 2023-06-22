@@ -13,6 +13,8 @@ import { ProfileModule } from './modules/profiles/profiles.module';
 import { JwtStrategy } from './auth/strategies/jwt.stategies';
 import { MailModule } from './modules/email/email.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { Follow } from './modules/follows/entities/follow.entity';
+import { FollowsModule } from './modules/follows/follows.module';
 
 @Module({
   imports: [
@@ -38,7 +40,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       username: 'root',
       password: '',
       database: 'ig',
-      entities: [User, Profile],
+      entities: [User, Profile, Follow],
       synchronize: true,
     }),
 
@@ -51,6 +53,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ProfileModule,
     UserModule,
     MailModule,
+    FollowsModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

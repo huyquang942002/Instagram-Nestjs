@@ -11,6 +11,14 @@ type Profile {
   userId: String!
 }
 
+type Follow {
+  id: String!
+  followingUsersId: String
+  followerUsersId: String
+  follower_users: [User!]
+  following_users: [User!]
+}
+
 type User {
   id: String!
   email: String!
@@ -22,12 +30,16 @@ type Query {
   getAllProfiles: [Profile!]!
   getProfileByUser1: Profile!
   deActive: User!
+  follows: [Follow!]!
+  follow(id: Int!): Follow!
 }
 
 type Mutation {
   createProfile(createProfile: CreateProfileInput!): Profile!
   signup(SignUp: SignupUserInput!): User!
   login(Login: LoginUserInput!): User!
+  createFollow(createFollowInput: CreateFollowInput!): Follow!
+  removeFollow(id: Int!): Follow!
 }
 
 input CreateProfileInput {
@@ -44,4 +56,9 @@ input SignupUserInput {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input CreateFollowInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }

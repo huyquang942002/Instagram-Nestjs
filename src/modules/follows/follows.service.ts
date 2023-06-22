@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFollowInput } from './dto/create-follow.input';
-import { UpdateFollowInput } from './dto/update-follow.input';
 
 @Injectable()
 export class FollowsService {
@@ -16,9 +15,6 @@ export class FollowsService {
     return `This action returns a #${id} follow`;
   }
 
-  update(id: number, updateFollowInput: UpdateFollowInput) {
-    return `This action updates a #${id} follow`;
-  }
 
   remove(id: number) {
     return `This action removes a #${id} follow`;
