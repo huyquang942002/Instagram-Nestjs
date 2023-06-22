@@ -11,19 +11,33 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Profile } from './modules/profiles/entities/profile.entity';
 import { ProfileModule } from './modules/profiles/profiles.module';
 import { JwtStrategy } from './auth/strategies/jwt.stategies';
+import { MailModule } from './modules/email/email.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // no need to import into other modules
     }),
+    // MailerModule.forRoot({
+    //   transport: {
+    //     host: 'smtp-mail.outlook.com',
+    //     port: 587,
+    //     secure: false,
+    //     auth: {
+    //       user: 'hideonbush8405@gmail.com',
+    //       pass: 'himfzfdgbjkazlbx',
+    //       //hducsfiwooabnuyp
+    //     },
+    //   },
+    // }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: 'root',
       password: '',
-      database: 'instagram',
+      database: 'ig',
       entities: [User, Profile],
       synchronize: true,
     }),
@@ -36,6 +50,7 @@ import { JwtStrategy } from './auth/strategies/jwt.stategies';
     }),
     ProfileModule,
     UserModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

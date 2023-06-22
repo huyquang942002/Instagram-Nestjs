@@ -5,9 +5,17 @@ import { UserResolver } from './user.resolver';
 import { User } from './entities/user.entity';
 import { MailModule } from '../email/email.module'; // Import MailModule
 import { AuthModule } from 'src/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), MailModule, AuthModule], // Include MailModule here
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    MailModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ], // Include MailModule here
   providers: [UserService, UserResolver],
   exports: [UserService],
 })

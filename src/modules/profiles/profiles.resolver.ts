@@ -3,7 +3,7 @@ import { Profile } from './entities/profile.entity';
 import { Request } from 'express';
 import { ProfileService } from './profiles.service';
 import { CreateProfileInput } from './dto/create-profile.input';
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @Resolver(() => Profile)
@@ -20,12 +20,30 @@ export class ProfileResolver {
   }
 
   @Query(() => [Profile])
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getAllProfiles(): Promise<Profile[]> {
     const result = this.profileService.findAll();
     if (!result) {
       return [];
     }
     return result;
+  }
+
+  // @Query(() => Profile)
+  // @UseGuards(JwtAuthGuard)
+  // async searchProfileByUserId(
+  //   @Args('userId') userId: string,
+  // ): Promise<Profile> {
+  //   try {
+  //     return await this.profileService.getProfileByUser(userId);
+  //   } catch (err) {
+  //     throw new NotFoundException(err.message);
+  //   }
+  // }
+
+  @Query(() => Profile)
+  @UseGuards(JwtAuthGuard)
+  async getProfileByUser1(@Context('req') req: Request) {
+    return this.profileService.getProfileByUser(req);
   }
 }

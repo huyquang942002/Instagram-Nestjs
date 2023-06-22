@@ -15,11 +15,13 @@ type User {
   id: String!
   email: String!
   profile: Profile
+  isActive: Boolean!
 }
 
 type Query {
   getAllProfiles: [Profile!]!
-  getUserByID(id: String!): User!
+  getProfileByUser1: Profile!
+  deActive: User!
 }
 
 type Mutation {

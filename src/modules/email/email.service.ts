@@ -11,16 +11,15 @@ export class MailService {
     return otp;
   }
 
-  public async sendOTPEmail(email: string, otp: string): Promise<void> {
-    try {
-      console.log('send mail success');
-      await this.mailerService.sendMail({
-        to: email,
-        subject: 'OTP Verification',
-        text: `Your OTP is ${otp}.`,
-      });
-    } catch (error) {
-      throw new Error('Failed to send OTP email.' + error);
-    }
+  public async sendOTPEmail(email: string, otp: string) {
+    // try {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'OTP Verification',
+      text: `Your OTP is ${otp}.`,
+    });
+    // } catch (error) {
+    //   throw new Error('Failed to send OTP email.' + error);
+    // }
   }
 }

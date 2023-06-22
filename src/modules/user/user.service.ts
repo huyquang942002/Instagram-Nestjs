@@ -10,6 +10,8 @@ import { Repository } from 'typeorm';
 import { MailService } from '../email/email.service';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
+import { Request } from 'express';
+import { getIdFromToken } from '../utils/jwt';
 
 @Injectable()
 export class UserService {
@@ -32,15 +34,13 @@ export class UserService {
 
     // const otp = this.mailService.generateOTP();
 
-    // console.log(otp)
-
     const user = this.usersRepository.create(signupUserInput);
 
     user.password = await bcrypt.hash(signupUserInput.password, 10);
 
-    await this.usersRepository.save(user);
-
     // await this.mailService.sendOTPEmail(user.email, otp);
+
+    await this.usersRepository.save(user);
 
     return user;
   }
@@ -91,5 +91,18 @@ export class UserService {
 
   async findOneById(id: string): Promise<User> {
     return await this.usersRepository.findOneBy({ id });
+  }
+
+  async deActive(req: Request) {
+    const id = await getIdFromToken(req);
+    const user = await this.findOneById(id);
+    if (!user) {
+      throw new NotFoundException('Not found user');
+    }
+    user.isActive = false;
+
+    await this.usersRepository.save(user);
+
+    return user;
   }
 }

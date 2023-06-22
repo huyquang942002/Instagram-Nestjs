@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { verify } from 'jsonwebtoken';
 
-export function verifyToken(req: Request): string {
+export function getIdFromToken(req: Request): string {
   let jwtToken = null;
   const token = req.headers?.authorization?.split(' ')[1];
   if (!token) {

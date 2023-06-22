@@ -32,4 +32,8 @@ export class User {
   @OneToOne(() => Profile, (profile) => profile.user)
   @Field(() => Profile, { nullable: true })
   profile: Profile;
+
+  @Field({ defaultValue: true })
+  @Column({ default: true })
+  isActive: boolean;
 }
